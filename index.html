@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フィードフォワード補正器のインフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .flow-container {
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            padding: 2rem 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: #9ca3af #f3f4f6;
+        }
+        .arrow-connector-h {
+            min-width: 60px;
+            height: 4px;
+            background-color: #d1d5db; /* gray-300 */
+            position: relative;
+        }
+        .arrow-connector-h::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #d1d5db; /* gray-300 */
+        }
+        .flow-card {
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb; /* gray-200 */
+            flex-shrink: 0;
+            width: 320px;
+            height: 100%;
+        }
+        .flow-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .highlight-card {
+            border-width: 2px;
+            border-color: #10b981; /* emerald-500 */
+            background-color: #ecfdf5; /* emerald-50 */
+        }
+        .highlight-card .icon-container {
+            background-color: #a7f3d0; /* emerald-200 */
+        }
+         .highlight-card .icon-svg {
+            color: #059669; /* emerald-600 */
+        }
+        .math-container {
+            display: inline-block;
+            vertical-align: -0.2em; /* テキストとの高さを微調整 */
+        }
+        math {
+             font-size: 1.1em;
+        }
+        /* ### 修正点 ### */
+        /* 演算子(<mo>)が親要素のフォントサイズを継承するように指定 */
+        /* これにより、括弧の大きさが他の文字と揃います */
+        math mo {
+            font-size: inherit;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- ヘッダー -->
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                データ駆動型偏差モデルによるフィードフォワード補正
+            </h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                理想と現実のギャップを予測し，制御を事前補正することで高精度な粒子操作を実現するプロセス．
+            </p>
+        </header>
+
+        <!-- メインフロー -->
+        <div class="relative">
+            <div class="w-full text-center mb-4">
+                <span class="text-xl font-semibold text-blue-800 bg-blue-100 px-6 py-2 rounded-full">オフラインでの事前計算フェーズ</span>
+            </div>
+            <div class="flow-container space-x-8">
+
+                <!-- Step 1: 目標軌道 -->
+                <div class="flow-card bg-white p-4 rounded-xl shadow-md flex flex-col justify-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-container bg-blue-100 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V7.618a1 1 0 01.553-.894L9 4l6 2.724a1 1 0 01.553.894v8.764a1 1 0 01-.553.894L15 20l-3-1.364L9 20z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 4v16M15 4v16"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-lg">1. 目標軌道の設定</h3>
+                    </div>
+                    <p class="text-gray-600 mt-3">ユーザーが描きたい理想的な軌道 <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>p</mi><mrow><mtext>target</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span> を定義する．</p>
+                </div>
+
+                <div class="arrow-connector-h"></div>
+
+                <!-- Step 2: OptiTrap -->
+                <div class="flow-card bg-white p-4 rounded-xl shadow-md flex flex-col justify-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-container bg-blue-100 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m12 0a2 2 0 100-4m0 4a2 2 0 110-4M6 6a2 2 0 100-4m0 4a2 2 0 110-4M18 6a2 2 0 100-4m0 4a2 2 0 110-4"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-lg">2. [OptiTrap] 軌道計画</h3>
+                    </div>
+                    <p class="text-gray-600 mt-3">理想モデル上で最適なトラップ軌道 <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mrow><mtext>optitrap</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span> を計算する．</p>
+                </div>
+                
+                <div class="arrow-connector-h"></div>
+
+                <!-- Step 3: 理想シミュレーション -->
+                <div class="flow-card bg-purple-50 p-4 rounded-xl shadow-md flex flex-col justify-center border-purple-200">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-container bg-purple-200 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-lg text-purple-800">3. [理想物理モデル]</h3>
+                    </div>
+                    <p class="text-gray-700 mt-3"><span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mrow><mtext>optitrap</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span> を入力し，理想的な粒子状態 <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>p</mi><mrow><mtext>ideal</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span> を予測する．</p>
+                </div>
+
+                <div class="arrow-connector-h"></div>
+
+                <!-- Step 4: SINDy (ハイライト) -->
+                <div class="flow-card highlight-card p-4 rounded-xl shadow-lg flex flex-col justify-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-container p-3 rounded-full">
+                            <svg class="w-8 h-8 icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-lg text-emerald-700">4. [★★偏差モデル(SINDy)★★]</h3>
+                    </div>
+                    <p class="text-gray-700 mt-3">理想状態と入力から，現実で生じる偏差加速度 <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>a</mi><mrow><mtext>unmodeled</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span> を予測する．</p>
+                </div>
+
+                <div class="arrow-connector-h"></div>
+
+                <!-- Step 5: 補正量計算 -->
+                <div class="flow-card bg-white p-4 rounded-xl shadow-md flex flex-col justify-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-container bg-blue-100 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-lg">5. [補正量計算] 逆問題</h3>
+                    </div>
+                    <p class="text-gray-600 mt-3">予測された偏差を打ち消すための補正入力 <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mrow><mtext>correction</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span> を逆算する．</p>
+                </div>
+
+                <div class="arrow-connector-h"></div>
+
+                <!-- Step 6: 最終入力 -->
+                <div class="flow-card bg-green-100 p-4 rounded-xl shadow-md flex flex-col justify-center border-green-300">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-container bg-green-200 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-lg text-green-800">6. 最終制御入力の生成</h3>
+                    </div>
+                    <p class="text-gray-600 mt-3">
+                        <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mrow><mtext>final</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span>
+                        <span class="mx-1">=</span>
+                        <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mrow><mtext>optitrap</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span>
+                        <span class="mx-1">+</span>
+                        <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mrow><mtext>correction</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="w-full text-center my-8">
+                <span class="text-xl font-semibold text-red-800 bg-red-100 px-6 py-2 rounded-full">オンラインでの実機適用</span>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8 w-full">
+                 <div class="flow-card bg-gray-800 text-white p-4 rounded-xl shadow-lg flex items-center space-x-4 w-full md:w-auto">
+                    <div class="icon-container bg-gray-600 p-3 rounded-full">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2 1M4 7l2-1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">7. 実機への適用</h3>
+                        <p class="text-gray-300">補正済みの <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mrow><mtext>final</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span> を音響浮揚装置に入力する．</p>
+                    </div>
+                </div>
+
+                <div class="arrow-connector-h hidden md:block" style="min-width: 40px;"></div>
+                <div class="arrow-connector md:hidden"></div>
+
+                <div class="flow-card bg-white p-4 rounded-xl shadow-md flex items-center space-x-4 w-full md:w-auto">
+                    <div class="icon-container bg-teal-100 p-3 rounded-full">
+                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">8. 高精度な軌道実現</h3>
+                        <p class="text-gray-600">現実の粒子軌道 <span class="math-container"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>p</mi><mrow><mtext>real</mtext></mrow></msub><mo>(</mo><mi>t</mi><mo>)</mo></math></span> が目標軌道に限りなく近づく．</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
